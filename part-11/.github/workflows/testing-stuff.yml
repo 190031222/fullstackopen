@@ -1,0 +1,22 @@
+name: Testing stuff
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  a_test_job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: message contains "#skip"
+        env: 
+          EVENT: ${{ github.event_name }}
+          CONTAINS: ${{ contains(join(github.event.commits.*.message, ', '), '#skip') }}
+          MESSAGE: ${{ join(github.event.commits.*.message, ', ') }}
+        # if: ${{ contains(join(github.event.commits.*.message, ', '), '#skip') }}
+        run: |
+          echo "$EVENT"
+          echo "$CONTAINS"
+          echo "$MESSAGE"
